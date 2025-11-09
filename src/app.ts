@@ -6,6 +6,7 @@ import {
 } from "fastify-type-provider-zod";
 
 // Routes
+import { authRoutes } from "./modules/auth/auth.routes";
 import { usersRoutes } from "./modules/users/users.routes";
 
 // Errors
@@ -40,6 +41,7 @@ app.setErrorHandler((error, _request, reply) => {
 		.send({ error: error.message || "Internal Server Error" });
 });
 
+app.register(authRoutes, { prefix: "/auth" });
 app.register(usersRoutes, { prefix: "/users" });
 
 export default app;
