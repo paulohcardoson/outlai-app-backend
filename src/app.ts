@@ -10,10 +10,16 @@ import { authRoutes } from "./modules/auth/auth.routes";
 import { usersRoutes } from "./modules/users/users.routes";
 
 // Errors
-import { AppError } from "./shared/errors/AppError";
+import { AppError } from "@shared/errors/AppError";
 
 // Containers
 import "@shared/containers";
+
+// Fastify plugins
+import fastifyCookie from "@fastify/cookie";
+import fastifySession from "@fastify/session";
+import fastifyCors from "@fastify/cors";
+import { env } from "./config/env";
 
 export const fastify = Fastify({
 	// logger: true,
@@ -38,8 +44,14 @@ app.setErrorHandler((error, _request, reply) => {
 
 	return reply
 		.status(500)
-		.send({ error: error.message || "Internal Server Error" });
+		.send({ error: error instanceof Error ? error.message : "Internal Server Error" });
 });
+
+// Plugins
+app.register(fastifyCors)
+app.register(fastifyCookie)
+// TODO: Configure session properly for production
+app.register(fastifySession, { secret: env.SESSION_SECRET, cookie: { secure: false } });
 
 app.register(authRoutes, { prefix: "/auth" });
 app.register(usersRoutes, { prefix: "/users" });

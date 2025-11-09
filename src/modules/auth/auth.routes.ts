@@ -5,21 +5,21 @@ import { AuthController } from "./auth.controller";
 
 export const schemas = {
 	loginSchema: z.object({
-		email: z.string().email(),
+		email: z.email(),
 		password: z.string().min(6),
 	}),
 
 	registerSchema: z.object({
 		name: z.string().min(2),
-		email: z.string().email(),
+		email: z.email(),
 		password: z.string().min(6),
 	}),
 
 	authResponseSchema: z.object({
 		user: z.object({
-			id: z.string().uuid(),
+			id: z.uuid(),
 			name: z.string().nullable(),
-			email: z.string().email(),
+			email: z.email(),
 			createdAt: z.date().nullable(),
 		}),
 		token: z.string().optional(),
