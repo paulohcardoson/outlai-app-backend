@@ -1,7 +1,7 @@
-import { db } from "@config/db";
+import { db } from "@src/config/db";
 import { eq } from "drizzle-orm";
 import { expenses } from "../../config/db/schema";
-import type { CreateExpenseDTO, UpdateExpenseDTO, Expense } from "./types";
+import type { CreateExpenseDTO, Expense, UpdateExpenseDTO } from "./types";
 
 export class ExpensesRepository {
 	async create(expense: CreateExpenseDTO): Promise<Expense | undefined> {

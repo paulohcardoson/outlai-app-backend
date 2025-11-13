@@ -1,4 +1,3 @@
-import type { User } from "@src/modules/users/types";
 
 export interface LoginDTO {
 	email: string;
@@ -12,6 +11,5 @@ export interface RegisterDTO {
 }
 
 export interface AuthResponse {
-	user: Omit<User, "password">;
 	token?: string;
 }

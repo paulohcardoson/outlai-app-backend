@@ -1,4 +1,4 @@
-import { db } from "@config/db";
+import { db } from "@src/config/db";
 import { eq } from "drizzle-orm";
 import { users } from "../../config/db/schema";
 import type { CreateUserDTO, UpdateUserDTO, User } from "./types";

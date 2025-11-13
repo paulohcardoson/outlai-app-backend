@@ -10,7 +10,7 @@ export class UsersService {
 	constructor(
 		@inject("UsersRepository")
 		private usersRepository: UsersRepository,
-	) {}
+	) { }
 
 	async createUser(userData: CreateUserDTO): Promise<User | undefined> {
 		// Check if email already exists

@@ -9,7 +9,7 @@ export class ExpensesController {
 		private expensesService: ExpensesService = container.resolve(
 			ExpensesService,
 		),
-	) {}
+	) { }
 
 	async create(
 		request: FastifyRequest<{ Body: CreateExpenseDTO }>,

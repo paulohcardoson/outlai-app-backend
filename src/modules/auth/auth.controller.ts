@@ -8,15 +8,17 @@ export class AuthController {
 	constructor(
 		@inject("AuthService")
 		private authService: AuthService,
-	) {}
+	) { }
 
 	async login(
 		request: FastifyRequest<{ Body: LoginDTO }>,
 		reply: FastifyReply,
 	) {
-		const result = await this.authService.login(request.body);
+		await this.authService.login(request.body);
 
-		return reply.status(200).send(result);
+		request.session.authenticated = true;
+
+		return reply.status(200).send({ message: "Login realizado com sucesso" });
 	}
 
 	async register(

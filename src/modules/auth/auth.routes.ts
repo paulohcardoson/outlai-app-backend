@@ -42,18 +42,4 @@ export const authRoutes = async (app: FastifyInstance) => {
 		},
 		authController.login.bind(authController),
 	);
-
-	// Register
-	app.post(
-		"/register",
-		{
-			schema: {
-				body: schemas.registerSchema,
-				response: {
-					201: schemas.authResponseSchema,
-				},
-			},
-		},
-		authController.register.bind(authController),
-	);
 };

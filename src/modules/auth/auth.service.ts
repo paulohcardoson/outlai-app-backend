@@ -3,16 +3,16 @@ import { AppError } from "@src/shared/errors/AppError";
 import bcrypt from "bcrypt";
 import { inject, injectable } from "tsyringe";
 import type { UsersRepository } from "../users/users.repository";
-import type { AuthResponse, LoginDTO, RegisterDTO } from "./types";
+import type { LoginDTO, RegisterDTO } from "./types";
 
 @injectable()
 export class AuthService {
 	constructor(
 		@inject("UsersRepository")
 		private usersRepository: UsersRepository,
-	) {}
+	) { }
 
-	async login(credentials: LoginDTO): Promise<AuthResponse> {
+	async login(credentials: LoginDTO): Promise<void> {
 		const user = await this.usersRepository.findByEmail(credentials.email);
 
 		if (!user) {
@@ -27,16 +27,9 @@ export class AuthService {
 		if (!isPasswordValid) {
 			throw new AppError("Credenciais inválidas", 401);
 		}
-
-		// Remove password from response
-		const { password: _, ...userWithoutPassword } = user;
-
-		return {
-			user: userWithoutPassword,
-		};
 	}
 
-	async register(userData: RegisterDTO): Promise<AuthResponse> {
+	async register(userData: RegisterDTO): Promise<void> {
 		// Check if email already exists
 		const existingUser = await this.usersRepository.findByEmail(userData.email);
 
@@ -59,10 +52,6 @@ export class AuthService {
 		}
 
 		// Remove password from response
-		const { password: _, ...userWithoutPassword } = newUser;
-
-		return {
-			user: userWithoutPassword,
-		};
+		const { password: _ } = newUser;
 	}
 }
