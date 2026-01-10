@@ -1,10 +1,14 @@
 {
-	"name": "outlai-backend",
-	"module": "index.ts",
+	"name": "outlai",
 	"type": "module",
 	"private": true,
+	"module": "./dist/api/index.mjs",
+	"types": "./dist/api/index.d.mts",
 	"scripts": {
+		"build": "pkgroll && npm run copy:templates",
+		"copy:templates": "mkdir -p dist/shared/views && cp -r src/shared/views/mails dist/shared/views/",
 		"dev:start": "tsx --env-file=.env --watch src/api/index.ts",
+		"start": "node --env-file=.env --watch dist/api/index.mjs",
 		"test": "jest"
 	},
 	"devDependencies": {
@@ -24,6 +28,7 @@
 		"typescript": "^5"
 	},
 	"dependencies": {
+		"@aws-sdk/client-ses": "^3.958.0",
 		"@fastify/cookie": "^11.0.2",
 		"@fastify/cors": "^11.1.0",
 		"@fastify/swagger": "^9.6.1",
@@ -40,14 +45,22 @@
 		"fastify-type-provider-zod": "^6.1.0",
 		"file-type": "^21.2.0",
 		"jsonwebtoken": "^9.0.3",
+		"mailgun.js": "^12.5.0",
 		"mime-types": "^3.0.2",
 		"nodemailer": "^7.0.11",
 		"nunjucks": "^3.2.4",
 		"pg": "^8.16.3",
+		"pkgroll": "^2.21.4",
 		"redis": "^5.9.0",
 		"reflect-metadata": "^0.2.2",
 		"tsyringe": "^4.10.0",
 		"uuid": "^13.0.0",
 		"zod": "^4.1.12"
+	},
+	"exports": {
+		"import": {
+			"types": "./dist/api/index.d.mts",
+			"default": "./dist/api/index.mjs"
+		}
 	}
 }

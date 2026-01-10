@@ -1,60 +1,73 @@
+import { AppError } from "@src/shared/errors/AppError";
 import type { FastifyReply, FastifyRequest } from "fastify";
 import { inject, injectable } from "tsyringe";
-import { schemas } from "./auth.routes";
 import type { AuthService } from "./auth.service";
+import type {
+	LoginRequestBody,
+	RegisterRequestBody,
+	ResendEmailVerificationRequestBody,
+	VerifyEmailRequestQuery,
+} from "./schemas";
 
 @injectable()
 export class AuthController {
-  constructor(
-    @inject("AuthService")
-    private authService: AuthService,
-  ) { }
+	constructor(
+		@inject("AuthService")
+		private authService: AuthService,
+	) {}
 
-  async login(request: FastifyRequest, reply: FastifyReply) {
-    const data = schemas.login.body.parse(request.body);
+	async login(request: FastifyRequest, reply: FastifyReply) {
+		const data = request.body as LoginRequestBody;
 
-    // Call service (JWT generation happens in service)
-    const loginResponse = await this.authService.login(data);
+		// Call service (JWT generation happens in service)
+		const loginResponse = await this.authService.login(data);
 
-    // Set HTTP Only cookie with the token
-    reply.setCookie("Authorization", loginResponse.token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      path: "/",
-      maxAge: 5 * 24 * 60 * 60, // 5 days (matching JWT expiration)
-    });
+		// Set HTTP Only cookie with the token
+		reply.setCookie("Authorization", loginResponse.token, {
+			httpOnly: true,
+			secure: process.env.NODE_ENV === "production",
+			sameSite: "strict",
+			path: "/",
+			maxAge: 5 * 24 * 60 * 60, // 5 days (matching JWT expiration)
+		});
 
-    // Send response with JWT token
-    return reply.status(200).send(loginResponse);
-  }
+		// Send response with JWT token
+		return reply.status(200).send(loginResponse);
+	}
 
-  async register(request: FastifyRequest, reply: FastifyReply) {
-    const data = schemas.register.body.parse(request.body);
+	async register(request: FastifyRequest, reply: FastifyReply) {
+		const data = request.body as RegisterRequestBody;
 
-    // Call service
-    await this.authService.register(data);
+		// Call service
+		await this.authService.register(data);
 
-    // Send response
-    return reply.status(200).send();
-  }
+		// Send response
+		return reply.status(200).send();
+	}
 
-  async verifyEmail(request: FastifyRequest, reply: FastifyReply) {
-    const { token, "user-id": userId } = schemas.verifyEmail.querystring.parse(request.query);
+	async verifyEmail(request: FastifyRequest, reply: FastifyReply) {
+		const { token, "user-id": userId } =
+			request.query as VerifyEmailRequestQuery;
 
-    // Call service
-    await this.authService.verifyEmail({ userId, token });
+		try {
+			await this.authService.verifyEmail({ userId, token });
 
-    // Send response
-    return reply.status(200).send();
-  }
+			return reply.status(200).send("Email successfully verified.");
+		} catch (error) {
+			if (error instanceof AppError) {
+				return reply.status(error.code as number).send(error.message);
+			}
 
-  async resendEmailVerification(request: FastifyRequest, reply: FastifyReply) {
-    const { email } = schemas.resendEmailVerification.body.parse(request.body);
+			return reply.status(400).send("Invalid or expired verification link.");
+		}
+	}
 
-    // Call service
-    await this.authService.resendEmailVerification(email);
+	async resendEmailVerification(request: FastifyRequest, reply: FastifyReply) {
+		const { email } = request.body as ResendEmailVerificationRequestBody;
 
-    return reply.status(200).send();
-  }
+		// Call service
+		await this.authService.resendEmailVerification(email);
+
+		return reply.status(200).send();
+	}
 }
