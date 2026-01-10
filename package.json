@@ -8,7 +8,7 @@
 		"build": "pkgroll && npm run copy:templates",
 		"copy:templates": "mkdir -p dist/shared/views && cp -r src/shared/views/mails dist/shared/views/",
 		"dev:start": "tsx --env-file=.env --watch src/api/index.ts",
-		"start": "node --env-file=.env --watch dist/api/index.mjs",
+		"start": "node --env-file=.env dist/api/index.mjs",
 		"test": "jest"
 	},
 	"devDependencies": {
