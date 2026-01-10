@@ -5,6 +5,9 @@ const enviroments = z.object({
 	APP_PORT: z.coerce.number(),
 	APP_URL: z.url(),
 
+	// Web app url
+	WEB_APP_URL: z.url(),
+
 	// PostgreSQL
 	POSTGRES_DATABASE: z.url(),
 	PASSWORD_SALT_ROUNDS: z.coerce.number(),

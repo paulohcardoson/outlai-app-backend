@@ -47,11 +47,7 @@ const addPlugins = async () => {
 	// Cookies and CORS
 	await app.register(fastifyCookie);
 	await app.register(fastifyCors, {
-		// origin:
-		// 	env.APP_MODE === "production"
-		// 		? "https://outlai.apps.paulohcardoson.me"
-		// 		: "http://localhost:5173",
-		origin: "http://localhost:5173",
+		origin: env.WEB_APP_URL,
 		credentials: true,
 	});
 
