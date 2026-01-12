@@ -5,7 +5,9 @@ import type { AuthService } from "./auth.service";
 import type {
 	LoginRequestBody,
 	RegisterRequestBody,
-	ResendEmailVerificationRequestBody,
+	RequestPasswordResetRequestBody,
+	ResendVerificationEmailRequestBody,
+	ResetPasswordRequestBody,
 	VerifyEmailRequestQuery,
 } from "./schemas";
 
@@ -62,12 +64,39 @@ export class AuthController {
 		}
 	}
 
-	async resendEmailVerification(request: FastifyRequest, reply: FastifyReply) {
-		const { email } = request.body as ResendEmailVerificationRequestBody;
+	async resendVerificationEmail(request: FastifyRequest, reply: FastifyReply) {
+		const { email } = request.body as ResendVerificationEmailRequestBody;
 
 		// Call service
-		await this.authService.resendEmailVerification(email);
+		await this.authService.resendVerificationEmail(email);
 
 		return reply.status(200).send();
+	}
+
+	async requestPasswordReset(request: FastifyRequest, reply: FastifyReply) {
+		const { email } = request.body as RequestPasswordResetRequestBody;
+
+		// Call service
+		await this.authService.requestPasswordReset(email);
+
+		return reply.status(200).send();
+	}
+
+	async resetPassword(request: FastifyRequest, reply: FastifyReply) {
+		const { userId, token, newPassword } =
+			request.body as ResetPasswordRequestBody;
+
+		await this.authService.resetPassword({ userId, token, newPassword });
+
+		return reply.status(200).send({ message: "Senha redefinida com sucesso." });
+	}
+
+	async logout(_request: FastifyRequest, reply: FastifyReply) {
+		// Clear the Authorization cookie
+		reply.clearCookie("Authorization", {
+			path: "/",
+		});
+
+		return reply.status(200).send({ message: "Logged out successfully" });
 	}
 }

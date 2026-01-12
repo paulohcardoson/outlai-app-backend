@@ -35,11 +35,39 @@ export const authRoutes = async (app: FastifyInstance) => {
 
 	// Resend Email Verification
 	app.post(
-		"/resend-email-verification",
+		"/resend-verification-email",
 		{
-			schema: schemas.resendEmailVerification,
+			schema: schemas.resendVerificationEmail,
 		},
 		async (request, reply) =>
-			authController.resendEmailVerification(request, reply),
+			authController.resendVerificationEmail(request, reply),
+	);
+
+	// Send Reset Password Email
+	app.post(
+		"/request-password-reset",
+		{
+			schema: schemas.requestPasswordReset,
+		},
+		async (request, reply) =>
+			authController.requestPasswordReset(request, reply),
+	);
+
+	// Reset Password
+	app.post(
+		"/reset-password",
+		{
+			schema: schemas.resetPassword,
+		},
+		async (request, reply) => authController.resetPassword(request, reply),
+	);
+
+	// Logout
+	app.post(
+		"/logout",
+		{
+			schema: schemas.logout,
+		},
+		async (request, reply) => authController.logout(request, reply),
 	);
 };

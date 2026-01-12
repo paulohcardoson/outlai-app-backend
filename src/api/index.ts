@@ -49,6 +49,7 @@ const addPlugins = async () => {
 	await app.register(fastifyCors, {
 		origin: env.WEB_APP_URL,
 		credentials: true,
+		methods: ["GET", "POST", "PUT", "DELETE"],
 	});
 
 	// Swagger Documentation
