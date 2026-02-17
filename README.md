@@ -141,7 +141,7 @@ WEB_APP_URL=http://localhost:5173
 
 ### Obtendo as Credenciais
 
-- **Google Gemini API**: Obtenha em [Google AI Studio](https://aistudio.google.com/app/apikey)
+- **Google Gemini API**: Obtenha em [Google AI Studio](https://aistudio.google.com/app/apikey) (antigo MakerSuite)
 - **Mailtrap**: Crie uma conta em [Mailtrap.io](https://mailtrap.io/)
 - **Mailgun**: Registre-se em [Mailgun.com](https://www.mailgun.com/)
 
@@ -305,7 +305,7 @@ pnpm drizzle-kit push
 pnpm drizzle-kit studio
 ```
 
-Isso abrirá o Drizzle Studio em `https://local.drizzle.studio` onde você pode visualizar e editar os dados do banco.
+Isso abrirá o Drizzle Studio no navegador (geralmente em `https://local.drizzle.studio`) onde você pode visualizar e editar os dados do banco.
 
 ### Schema Atual
 
