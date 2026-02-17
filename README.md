@@ -312,7 +312,7 @@ Isso abrirá o Drizzle Studio em `https://local.drizzle.studio` onde você pode 
 O banco de dados possui as seguintes tabelas:
 
 - **users**: Armazena informações dos usuários
-  - id, name, email, password, isEmailVerified, createdAt
+  - id, name, email, password (hash bcrypt), isEmailVerified, createdAt
 
 - **expenses**: Armazena as despesas dos usuários
   - id, userId, description, amount, category, date, createdAt
