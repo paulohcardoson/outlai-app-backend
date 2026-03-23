@@ -47,7 +47,7 @@ jobs:
           key: ${{ secrets.DIGITAL_OCEAN_SSH_SECRET_KEY }}
           port: ${{ secrets.DIGITAL_OCEAN_SSH_PORT }}
           source: "dist/*,package.json,compose.yaml"
-          target: ${{ secrets.DIGITAL_OCEAN_SSH_DESTINATION }}
+          target: ${{ secrets.DIGITAL_OCEAN_SSH_DESTINATION }}/
       - name: Finish deploy to Digital Ocean
         uses: appleboy/ssh-action@v1
         with:
