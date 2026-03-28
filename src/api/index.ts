@@ -75,7 +75,7 @@ const start = async () => {
 	await addPlugins();
 	await addAPIv1();
 
-	await app.listen({ port: env.APP_PORT });
+	await app.listen({ port: env.APP_PORT, host: "0.0.0.0" });
 };
 
 try {
