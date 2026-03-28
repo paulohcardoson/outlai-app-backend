@@ -36,6 +36,3 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 # Nektos Act
 .github/nektos
-
-# Drizzle
-drizzle
